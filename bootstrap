@@ -34,7 +34,7 @@ link() {
     local dst_parent="$(dirname "$dst")"
 
     if [ ! -e "$src" ]; then
-        warn "$src: skip due to source missing"
+        warn "$src: Skip due to source missing"
         return 0
     fi
 
