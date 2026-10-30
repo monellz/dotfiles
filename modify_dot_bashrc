@@ -1,0 +1,13 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  服务器上已有的 ~/.bashrc 原样保留，只在末尾追加一行读取 ~/.config/shell/bashrc.bash；
+  已经有这一行就不再追加。.chezmoi.stdin 是 ~/.bashrc 当前的内容，文件不存在时为空。
+*/ -}}
+{{- $line := "[ -f ~/.config/shell/bashrc.bash ] && . ~/.config/shell/bashrc.bash" -}}
+{{- $s := .chezmoi.stdin -}}
+{{- $s -}}
+{{- if not (contains $line $s) -}}
+{{-   if $s }}{{ if not (hasSuffix "\n" $s) }}{{ "\n" }}{{ end }}{{ "\n" }}{{ end -}}
+{{-   "# 由 chezmoi 添加：别名、代理、vim 模式等个人设置\n" -}}
+{{-   $line }}{{ "\n" -}}
+{{- end -}}

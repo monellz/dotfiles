@@ -1,0 +1,28 @@
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY
+
+# 上下键按前缀搜索历史
+bindkey "\e[A" history-beginning-search-backward
+bindkey "\e[B" history-beginning-search-forward
+
+setopt autocd
+
+# vim 模式
+bindkey -v
+# 让vim在插入/命令模式下都能使用backspace
+bindkey -M viins '^?' backward-delete-char
+bindkey -M vicmd '^?' backward-delete-char
+
+autoload -Uz compinit; compinit
+
+# 别名、代理、PATH 等和 bash 共用的设置
+source ~/.config/shell/common.sh
+
+# 服务器上不一定装了这几个工具，没装就跳过
+command -v fzf >/dev/null && source <(fzf --zsh)
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+command -v starship >/dev/null && eval "$(starship init zsh)"

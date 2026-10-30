@@ -1,0 +1,22 @@
+README.md
+
+{{- /* ghostty 是本地终端，服务器上用不到 */}}
+{{ if ne .kind "macos" }}
+.config/ghostty
+{{ end }}
+
+{{- /* bash 的配置只给服务器用（服务器上通常没有 zsh），Mac 上用 zsh */}}
+{{ if ne .kind "server" }}
+.bashrc
+.bash_profile
+.config/shell/bashrc.bash
+{{ end }}
+
+{{- /*
+  bash 登录时按 .bash_profile、.bash_login、.profile 的顺序只读第一个存在的文件。
+  服务器上已有 .bash_login 或 .profile 时不能再建 .bash_profile，否则它们会被跳过；
+  这两个文件通常已经会去读 ~/.bashrc。已有 .bash_profile 的情况由 create_ 前缀处理（不覆盖）。
+*/}}
+{{ if or (stat (joinPath .chezmoi.homeDir ".bash_login")) (stat (joinPath .chezmoi.homeDir ".profile")) }}
+.bash_profile
+{{ end }}

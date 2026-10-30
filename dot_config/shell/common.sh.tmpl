@@ -1,0 +1,58 @@
+# zsh 和 bash 共用的设置，由 ~/.zshrc 和 ~/.config/shell/bashrc.bash 读取。
+# 这里只写两种 shell 都支持的语法；按键、历史记录、补全这些各自写在自己的文件里。
+
+# PATH
+# 要在检查 fzf 等命令之前设置：服务器上这几个工具是 chezmoi 下载到 ~/.local/bin 的
+export PATH=$HOME/.local/bin:$PATH
+
+export EDITOR=vim
+export VISUAL=vim
+
+alias l='ls -lah --color=auto'
+alias la='ls -lAh --color=auto'
+alias ll='ls -lh --color=auto'
+alias ls='ls --color=auto'
+alias lsa='ls -lah --color=auto'
+
+# yazi（文件管理器）：退出时 cd 到 yazi 里最后所在的目录
+function y() {
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    command yazi "$@" --cwd-file="$tmp"
+    IFS= read -r -d '' cwd < "$tmp"
+    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+    rm -f -- "$tmp"
+}
+
+# 代理
+# Mac 上 sing-box 监听 7890；
+# 服务器上没有 sing-box，用 ssh 登录时 RemoteForward 转过来的 9870
+{{- if eq .kind "server" }}
+PROXY_URL=http://127.0.0.1:9870
+{{- else }}
+PROXY_URL=http://127.0.0.1:7890
+{{- end }}
+proxy() {
+    if [[ $# -eq 0 ]]; then
+        echo "Warning: No command provided. Setting proxy globally in current shell." >&2
+    fi
+    https_proxy=$PROXY_URL http_proxy=$PROXY_URL "$@"
+}
+
+unproxy() {
+    unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+    echo "Proxy variables unset."
+}
+# hugo / go 的模块代理
+export GOPROXY=https://goproxy.cn/,direct
+export HUGO_MODULE_PROXY=https://goproxy.cn/,direct
+
+# 必须走代理的程序
+alias claude="proxy claude"
+alias codex="proxy codex"
+
+codex-my() {
+    https_proxy=$PROXY_URL \
+    http_proxy=$PROXY_URL \
+    CODEX_HOME=$HOME/.codex-my \
+    codex "$@"
+}

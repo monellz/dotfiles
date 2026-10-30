@@ -1,0 +1,60 @@
+{{ if eq .kind "server" -}}
+{{- /*
+  服务器上通常没有 root，系统自带的版本也常常太旧（fzf --zsh 要 0.48 以上），
+  所以 shell 配置里用到的命令行工具直接下载官方预编译程序放到 ~/.local/bin。
+  版本固定写在这里，升级时改版本号。
+  .chezmoi.arch 是 amd64 / arm64：fzf 的文件名直接用它，其余几个用 x86_64 / aarch64。
+*/ -}}
+{{- $fzf := "0.74.5" -}}
+{{- $zoxide := "0.10.0" -}}
+{{- $starship := "1.27.0" -}}
+{{- $yazi := "26.9.1" -}}
+{{- $fd := "10.5.0" -}}
+{{- $rg := "15.2.0" -}}
+{{- $arch := get (dict "amd64" "x86_64" "arm64" "aarch64") .chezmoi.arch -}}
+[".local/bin/fzf"]
+    type = "archive-file"
+    url = "https://github.com/junegunn/fzf/releases/download/v{{ $fzf }}/fzf-{{ $fzf }}-linux_{{ .chezmoi.arch }}.tar.gz"
+    path = "fzf"
+    executable = true
+
+# musl 版本是静态链接的，不依赖服务器上的 glibc 版本
+[".local/bin/zoxide"]
+    type = "archive-file"
+    url = "https://github.com/ajeetdsouza/zoxide/releases/download/v{{ $zoxide }}/zoxide-{{ $zoxide }}-{{ $arch }}-unknown-linux-musl.tar.gz"
+    path = "zoxide"
+    executable = true
+
+[".local/bin/starship"]
+    type = "archive-file"
+    url = "https://github.com/starship/starship/releases/download/v{{ $starship }}/starship-{{ $arch }}-unknown-linux-musl.tar.gz"
+    path = "starship"
+    executable = true
+
+# yazi 的压缩包里程序在 yazi-<架构>-unknown-linux-musl/ 目录下；ya 是它的插件和主题管理命令
+[".local/bin/yazi"]
+    type = "archive-file"
+    url = "https://github.com/sxyazi/yazi/releases/download/v{{ $yazi }}/yazi-{{ $arch }}-unknown-linux-musl.zip"
+    path = "yazi-{{ $arch }}-unknown-linux-musl/yazi"
+    executable = true
+
+[".local/bin/ya"]
+    type = "archive-file"
+    url = "https://github.com/sxyazi/yazi/releases/download/v{{ $yazi }}/yazi-{{ $arch }}-unknown-linux-musl.zip"
+    path = "yazi-{{ $arch }}-unknown-linux-musl/ya"
+    executable = true
+
+# 按文件名查找（更好用的 find），yazi 里按 s 搜索也用它
+[".local/bin/fd"]
+    type = "archive-file"
+    url = "https://github.com/sharkdp/fd/releases/download/v{{ $fd }}/fd-v{{ $fd }}-{{ $arch }}-unknown-linux-musl.tar.gz"
+    path = "fd-v{{ $fd }}-{{ $arch }}-unknown-linux-musl/fd"
+    executable = true
+
+# 按内容搜索（更快的 grep -r），yazi 里按 S 搜索也用它。ripgrep 的版本标签不带 v
+[".local/bin/rg"]
+    type = "archive-file"
+    url = "https://github.com/BurntSushi/ripgrep/releases/download/{{ $rg }}/ripgrep-{{ $rg }}-{{ $arch }}-unknown-linux-musl.tar.gz"
+    path = "ripgrep-{{ $rg }}-{{ $arch }}-unknown-linux-musl/rg"
+    executable = true
+{{- end }}

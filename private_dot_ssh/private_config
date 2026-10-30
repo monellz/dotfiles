@@ -1,0 +1,14 @@
+# 主机清单（内部服务器地址、账号、跳板机）不在这个公开仓库里，
+# 由各机器自己放到 ~/.ssh/config.d/ 下（自己的机器上来自 envkit 的 ssh/hosts）。
+# 放在最前面：ssh 对同一个选项只取第一次出现的值，具体主机的设置要先于下面的通用设置。
+Include config.d/*
+
+# 有些网络封了 22 端口，github 统一走 443
+Host github.com github
+    HostName ssh.github.com
+    Port 443
+    User git
+
+# 默认设置
+Host *
+    AddKeysToAgent yes

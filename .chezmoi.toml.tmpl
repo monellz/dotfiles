@@ -1,0 +1,10 @@
+{{- /*
+  机器类型决定装哪些文件（.chezmoiignore）和配置里因机器而异的部分（代理端口、下载哪些工具等）。
+  init 时询问一次，必须明确选择，不提供默认值；结果记在 ~/.config/chezmoi/chezmoi.toml，
+  之后不再询问。非交互安装时用 --promptChoice kind=server 直接指定
+  （--promptChoice 按提示文字匹配，所以提示文字就写成 kind）。
+*/ -}}
+{{- $kind := promptChoiceOnce . "kind" "kind" (list "macos" "server") -}}
+
+[data]
+    kind = {{ $kind | quote }}
