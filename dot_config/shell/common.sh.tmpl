@@ -46,7 +46,9 @@ unproxy() {
 export GOPROXY=https://goproxy.cn/,direct
 export HUGO_MODULE_PROXY=https://goproxy.cn/,direct
 
+
 # 必须走代理的程序
+export CLAUDE_CODE_RETRY_WATCHDOG=1
 alias claude="proxy claude"
 alias codex="proxy codex"
 
