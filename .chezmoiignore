@@ -6,10 +6,12 @@ README.md
 {{ end }}
 
 {{- /* bash 的配置只给服务器用（服务器上通常没有 zsh），Mac 上用 zsh */}}
+{{- /* 此外Mac不用chezmoi下载clangd，需要跳过符号链接，否则此链接是一个失效的链接 */}}
 {{ if ne .kind "server" }}
 .bashrc
 .bash_profile
 .config/shell/bashrc.bash
+.local/bin/clangd
 {{ end }}
 
 {{- /*

@@ -12,6 +12,7 @@
 {{- $fd := "10.5.0" -}}
 {{- $rg := "15.2.0" -}}
 {{- $dust := "1.2.7" -}}
+{{- $clangd := "22.1.1" -}}
 {{- $arch := get (dict "amd64" "x86_64" "arm64" "aarch64") .chezmoi.arch -}}
 [".local/bin/fzf"]
     type = "archive-file"
@@ -65,4 +66,47 @@
     url = "https://github.com/bootandy/dust/releases/download/v{{ $dust }}/dust-v{{ $dust }}-{{ $arch }}-unknown-linux-musl.tar.gz"
     path = "dust-v{{ $dust }}-{{ $arch }}-unknown-linux-musl/dust"
     executable = true
+
+
+{{- if eq .chezmoi.arch "arm64" }}
+
+# C/C++ 语言服务器。mason 没有 arm64 Linux 的 clangd，官方 Release 也没有，
+# 这里用 PyPI 的 wheel（就是 zip 包）；其他平台由 mason 安装。
+# 它要用同目录 lib/clang 下的内置头文件，所以解压整个目录，~/.local/bin 里放符号链接。
+[".local/opt/clangd"]
+    type = "archive"
+    url = "https://files.pythonhosted.org/packages/py2.py3/c/clangd/clangd-{{ $clangd }}-py2.py3-none-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl"
+    format = "zip"
+    stripComponents = 2
+    exact = true
 {{- end }}
+{{- end }}
+
+
+
+
+
+{{- /* 这一项所有机器都装，所以放在 server 判断外面 */}}
+{{- $treeSitter := get (dict
+  "linux/amd64" "linux-64/tree-sitter-cli-0.27.1-hc7555a6_0"
+  "linux/arm64" "linux-aarch64/tree-sitter-cli-0.27.1-h4f14f73_0"
+  "darwin/amd64" "osx-64/tree-sitter-cli-0.27.1-hb042fba_0"
+  "darwin/arm64" "osx-arm64/tree-sitter-cli-0.27.1-haee3d69_0"
+) (printf "%s/%s" .chezmoi.os .chezmoi.arch) }}
+
+# 解析代码做语法高亮，nvim-treesitter 编译 parser 时要用。
+# 官方程序要 glibc 2.39，conda-forge 的构建只要 2.17。.conda 是 zip 里套 tar.zst，用 python 取出内层包
+[".local/bin/tree-sitter"]
+    type = "archive-file"
+    url = "https://conda.anaconda.org/conda-forge/{{ $treeSitter }}.conda"
+    format = "tar.zst"
+    path = "bin/tree-sitter"
+    executable = true
+    [".local/bin/tree-sitter".filter]
+        command = "python3"
+        args = ["-Ic", "import io,sys,zipfile; z=zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())); sys.stdout.buffer.write(z.read(next(n for n in z.namelist() if n.startswith('pkg-'))))"]
+
+
+
+
+
