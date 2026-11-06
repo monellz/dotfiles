@@ -7,6 +7,8 @@ opt.signcolumn = "yes"     -- 左侧固定留一列，之后 git、诊断标记�
 opt.cursorline = true      -- 高亮当前行
 opt.scrolloff = 6          -- 光标上下至少留 6 行
 opt.wrap = false           -- 长行不折行
+opt.laststatus = 3    -- 所有窗口共用一条状态栏
+opt.showmode = false  -- 状态栏里已经有模式，不用在命令行重复显示
 opt.splitright = true      -- 新窗口开在右边
 opt.splitbelow = true      -- 新窗口开在下边
 opt.fillchars = { diff = "╱", eob = " " }  -- diff 空行用斜线填充，文件尾不显示 ~
@@ -27,6 +29,7 @@ opt.smartcase = true
 opt.mouse = "a"            -- 支持鼠标
 opt.undofile = true        -- 关掉文件后仍能撤销
 opt.confirm = true         -- 退出时有未保存内容就询问，而不是报错
+opt.timeoutlen = 400  -- 按下前缀后，等 400 毫秒就弹出提示
 
 -- 剪贴板：yank 直接进系统剪贴板
 opt.clipboard = "unnamedplus"

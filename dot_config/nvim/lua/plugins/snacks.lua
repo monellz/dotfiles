@@ -1,5 +1,12 @@
 return {
-  { "nvim-mini/mini.icons", lazy = false, opts = {} },
+  {
+    "nvim-mini/mini.icons",
+    lazy = false,
+    config = function()
+      require("mini.icons").setup()
+      MiniIcons.mock_nvim_web_devicons() -- 让只认 devicons 的插件也能显示图标
+    end,
+  },
   {
     "folke/snacks.nvim",
     lazy = false,
