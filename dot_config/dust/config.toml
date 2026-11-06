@@ -1,0 +1,11 @@
+reverse = false               # true 则最大的在最下面（ncdu 风格）
+number-of-lines = 30          # 对应 -n
+depth = 2                     # 对应 -d，不写则不限
+ignore-hidden = false         # 对应 -i
+display-full-paths = false    # 对应 -p
+skip-total = false            # 对应 -s
+bars-on-right = false         # 对应 -b
+disable-progress = false      # 对应 -P
+iso = false                   # 对应 -H，用 1000 进制
+no-colors = false             # 对应 -c
+# output-format = "si"        # 对应 -o：si / b / k / m / g / t

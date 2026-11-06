@@ -11,6 +11,7 @@
 {{- $yazi := "26.9.1" -}}
 {{- $fd := "10.5.0" -}}
 {{- $rg := "15.2.0" -}}
+{{- $dust := "1.2.7" -}}
 {{- $arch := get (dict "amd64" "x86_64" "arm64" "aarch64") .chezmoi.arch -}}
 [".local/bin/fzf"]
     type = "archive-file"
@@ -56,5 +57,12 @@
     type = "archive-file"
     url = "https://github.com/BurntSushi/ripgrep/releases/download/{{ $rg }}/ripgrep-{{ $rg }}-{{ $arch }}-unknown-linux-musl.tar.gz"
     path = "ripgrep-{{ $rg }}-{{ $arch }}-unknown-linux-musl/rg"
+    executable = true
+
+# 查看目录占用的磁盘空间（更好用的 du）
+[".local/bin/dust"]
+    type = "archive-file"
+    url = "https://github.com/bootandy/dust/releases/download/v{{ $dust }}/dust-v{{ $dust }}-{{ $arch }}-unknown-linux-musl.tar.gz"
+    path = "dust-v{{ $dust }}-{{ $arch }}-unknown-linux-musl/dust"
     executable = true
 {{- end }}

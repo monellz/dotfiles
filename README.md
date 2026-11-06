@@ -5,7 +5,7 @@
 | 类型 | 装哪些 |
 | --- | --- |
 | `macos` | 终端配置 + ghostty，代理走本机 sing-box 的 7890 |
-| `server` | 终端配置 + bash 配置 + 下载 fzf、zoxide、starship、yazi、fd、rg，代理走 ssh 转发过来的 9870 |
+| `server` | 终端配置 + bash 配置 + 下载 fzf、zoxide、starship、yazi、fd、rg、dust，代理走 ssh 转发过来的 9870 |
 
 终端配置指 zsh、vim、tmux、git、ssh 通用设置、yazi。
 
@@ -29,7 +29,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply monellz
 ```
 
 远程服务器：只装一次，装完删掉 chezmoi 程序和仓库副本，服务器上只留下配置文件，
-以及下载到 `~/.local/bin` 的 fzf、zoxide、starship、yazi、fd、rg（版本见 `.chezmoiexternal.toml.tmpl`）。
+以及下载到 `~/.local/bin` 的 fzf、zoxide、starship、yazi、fd、rg、dust（版本见 `.chezmoiexternal.toml.tmpl`）。
 在带 `RemoteForward 9870` 的 ssh 会话里执行，下载经本机的 sing-box：
 
 ```bash
@@ -54,7 +54,7 @@ chezmoi cd              # 进入源码目录提交、推送
 
 - `.chezmoi.toml.tmpl`：init 时确定机器类型，记在 `~/.config/chezmoi/chezmoi.toml`
 - `.chezmoiignore`：按机器类型跳过不需要的文件
-- `.chezmoiexternal.toml.tmpl`：从外部下载的内容（服务器上的 fzf、zoxide、starship、yazi、fd、rg，固定版本）
+- `.chezmoiexternal.toml.tmpl`：从外部下载的内容（服务器上的 fzf、zoxide、starship、yazi、fd、rg、dust，固定版本）
 - `modify_dot_bashrc`、`create_dot_bash_profile`：只修改、只在不存在时创建，不覆盖服务器上已有的文件
 - `*.tmpl`：内容因机器而异的配置，目前是 `dot_config/shell/common.sh.tmpl`（代理端口）和 `dot_gitconfig.tmpl`（gh 的路径）
 
