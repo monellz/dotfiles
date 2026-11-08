@@ -2,14 +2,11 @@
 {{- /*
   ~/.claude/settings.json 由 Claude Code 自己维护（权限、模型等），这里只设置 env.HTTPS_PROXY，
   其他内容原样保留。桌面 App 启动的 Claude Code（包括 SSH 连到服务器的会话）不读 shell 里的
-  alias claude="proxy claude"，所以代理写在这里。端口和 common.sh.tmpl 一致：
-  Mac 上是 sing-box 的 7890，服务器上是 ssh RemoteForward 转过来的 9870。
+  alias claude="proxy claude"，所以代理写在这里。端口和 common.sh.tmpl 一致，所有机器都是 9870：
+  Mac 上是本机 sing-box 的 local-in，服务器上是 ssh RemoteForward 转过来的。
   .chezmoi.stdin 是文件当前的内容，文件不存在时为空。输出的 key 会按字母顺序排列。
 */ -}}
-{{- $proxy := "http://127.0.0.1:7890" -}}
-{{- if eq .kind "server" -}}
-{{-   $proxy = "http://127.0.0.1:9870" -}}
-{{- end -}}
+{{- $proxy := "http://127.0.0.1:9870" -}}
 {{- $s := trim .chezmoi.stdin -}}
 {{- $settings := dict -}}
 {{- if $s -}}

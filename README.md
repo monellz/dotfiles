@@ -4,7 +4,7 @@
 
 | 类型 | 装哪些 |
 | --- | --- |
-| `macos` | 终端配置 + ghostty，代理走本机 sing-box 的 7890 |
+| `macos` | 终端配置 + ghostty，代理走本机 sing-box 的 9870 |
 | `server` | 终端配置 + bash 配置 + 下载 fzf、zoxide、starship、yazi、fd、rg、dust，代理走 ssh 转发过来的 9870 |
 
 终端配置指 zsh、vim、tmux、git、ssh 通用设置、yazi。
@@ -57,6 +57,6 @@ chezmoi cd              # 进入源码目录提交、推送
 - `.chezmoiexternal.toml.tmpl`：从外部下载的内容（服务器上的 fzf、zoxide、starship、yazi、fd、rg、dust，固定版本）
 - `modify_dot_bashrc`、`create_dot_bash_profile`：只修改、只在不存在时创建，不覆盖服务器上已有的文件
 - `dot_claude/modify_private_settings.json`：只在 Claude Code 的 `~/.claude/settings.json` 里设置 `env.HTTPS_PROXY`（端口同上），其他设置由 Claude Code 自己维护
-- `*.tmpl`：内容因机器而异的配置，目前是 `dot_config/shell/common.sh.tmpl`（代理端口）和 `dot_gitconfig.tmpl`（gh 的路径）
+- `*.tmpl`：内容因机器而异的配置，目前是 `dot_gitconfig.tmpl`（gh 的路径）
 
 改动机器类型：编辑 `~/.config/chezmoi/chezmoi.toml` 里的 `kind`，或者 `chezmoi init --promptChoice kind=...`。

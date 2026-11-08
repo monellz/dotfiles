@@ -23,14 +23,9 @@ function y() {
     rm -f -- "$tmp"
 }
 
-# 代理
-# Mac 上 sing-box 监听 7890；
-# 服务器上没有 sing-box，用 ssh 登录时 RemoteForward 转过来的 9870
-{{- if eq .kind "server" }}
+# 代理：所有机器都是 127.0.0.1:9870
+# Mac 上是本机 sing-box 的 local-in；服务器上没有 sing-box，是 ssh 登录时 RemoteForward 转过来的 9870
 PROXY_URL=http://127.0.0.1:9870
-{{- else }}
-PROXY_URL=http://127.0.0.1:7890
-{{- end }}
 proxy() {
     if [[ $# -eq 0 ]]; then
         echo "Warning: No command provided. Setting proxy globally in current shell." >&2
