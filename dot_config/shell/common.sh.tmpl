@@ -47,9 +47,9 @@ export CLAUDE_CODE_RETRY_WATCHDOG=1
 alias claude="proxy claude"
 alias codex="proxy codex"
 
-codex-my() {
+codex-thu() {
     https_proxy=$PROXY_URL \
     http_proxy=$PROXY_URL \
-    CODEX_HOME=$HOME/.codex-my \
+    CODEX_HOME=$HOME/.codex-thu \
     codex "$@"
 }
